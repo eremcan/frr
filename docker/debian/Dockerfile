@@ -20,9 +20,12 @@ RUN apt-get update && \
 RUN mkdir -p /var/run/frr
 RUN chown -R frr:frr /etc/frr /var/run/frr
 
+# Copy the docker-start script
+COPY docker-start /usr/lib/frr/docker-start
+RUN chmod +x /usr/lib/frr/docker-start
+
 # Simple init manager for reaping processes and forwarding signals
 ENTRYPOINT ["/usr/bin/tini", "--"]
 
 # Default CMD starts watchfrr
-COPY docker-start /usr/lib/frr/docker-start
 CMD ["/usr/lib/frr/docker-start"]
